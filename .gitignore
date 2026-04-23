@@ -1,0 +1,24 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Model binaries (optional – they are large; decide if you want to track them)
+*.joblib
+
+# Logs
+logs/*.log
+
+# Node
+node_modules/
+build/
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# IDE
+.vscode/
+.idea/
