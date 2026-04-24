@@ -22,3 +22,9 @@ docker-compose.yml
 # IDE
 .vscode/
 .idea/
+# RAG generated files
+backend/chroma_db/
+backend/data/
+
+# Python version file
+backend/.python-version
