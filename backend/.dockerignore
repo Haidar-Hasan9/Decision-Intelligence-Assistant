@@ -1,0 +1,9 @@
+.venv
+__pycache__
+chroma_db
+data
+logs
+*.joblib
+*.log
+.git
+*.pyc
