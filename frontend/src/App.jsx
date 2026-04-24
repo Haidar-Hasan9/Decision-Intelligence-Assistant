@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import {
   Container, Row, Col, Form, Button, Card, ListGroup,
-  Spinner, Offcanvas, Table
+  Spinner, Table
 } from 'react-bootstrap';
 import Header from './components/Header';
 
@@ -10,13 +10,6 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
-
-  const recentQueries = [
-    "Refund still not processed after 10 days",
-    "My order shows delivered but I never got it",
-    "Agent promised a callback but never called"
-  ];
 
   const handleSend = async (text) => {
     const query = text || input;
@@ -58,33 +51,8 @@ function App() {
 
       <Container fluid className="main-container">
         <Row className="h-100">
-          {/* Offcanvas for recent queries */}
-          <Offcanvas show={showHistory} onHide={() => setShowHistory(false)} responsive="md">
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title>Recent Queries</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <ListGroup>
-                {recentQueries.map((q, idx) => (
-                  <ListGroup.Item
-                    key={idx}
-                    action
-                    onClick={() => { handleSend(q); setShowHistory(false); }}
-                  >
-                    {q}
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Offcanvas.Body>
-          </Offcanvas>
-
-          {/* Toggle button for sidebar (mobile) */}
-          <div className="d-md-none position-fixed top-0 start-0 m-3" style={{ zIndex: 1050 }}>
-            <Button variant="primary" onClick={() => setShowHistory(true)}>☰</Button>
-          </div>
-
           {/* Chat area */}
-          <Col xs={12} md={9} className="chat-col">
+          <Col className="chat-col">
             <div className="chat-messages">
               {messages.map((msg, idx) => (
                 <div key={idx} className={`message-bubble ${msg.role}`}>
@@ -112,7 +80,7 @@ function App() {
 
                       <Card className="mb-2">
                         <Card.Body>
-                          <h5>Non-RAG Answer</h5>
+                          <h5>Non‑RAG Answer</h5>
                           <p>{msg.data.nonRag.answer}</p>
                           <small className="text-muted">
                             {msg.data.nonRag.latency_ms} ms · ${msg.data.nonRag.cost_usd.toFixed(6)}
@@ -140,7 +108,7 @@ function App() {
                             <td>$0.00</td>
                           </tr>
                           <tr>
-                            <td>LLM Zero-shot</td>
+                            <td>LLM Zero‑shot</td>
                             <td>{msg.data.llmPrio.priority === 1 ? 'Urgent' : 'Normal'}</td>
                             <td>{msg.data.llmPrio.confidence.toFixed(4)}</td>
                             <td>{msg.data.llmPrio.latency_ms} ms</td>
