@@ -1,3 +1,4 @@
+import pandas as pd
 import logging
 from functools import lru_cache
 import joblib
@@ -20,10 +21,19 @@ def predict_priority(text: str):
     Returns {"priority": 0 or 1, "confidence": float}
     """
     model = load_model()
-    # Compute features
-    features = compute_features(text)  # returns a list or numpy array
-    features = np.array(features).reshape(1, -1)
-    pred = model.predict(features)[0]
-    proba = model.predict_proba(features)[0]  # [prob_class0, prob_class1]
+
+    # Compute features (returns a list)
+    features_list = compute_features(text)
+    
+    # Must match the training feature names and order
+    feature_names = [
+        'text_length', 'word_count', 'exclamation_count', 'question_count',
+        'all_caps_ratio', 'sentiment_polarity', 'sentiment_subjectivity', 'has_urgent_keyword'
+    ]
+    
+    # Create a DataFrame because the pipeline was trained with named columns
+    features_df = pd.DataFrame([features_list], columns=feature_names)
+    pred = model.predict(features_df)[0]
+    proba = model.predict_proba(features_df)[0]  # [prob_class0, prob_class1]
     confidence = proba[1] if pred == 1 else proba[0]
-    return {"priority": int(pred), "confidence": float(confidence)} 
+    return {"priority": int(pred), "confidence": float(confidence)}

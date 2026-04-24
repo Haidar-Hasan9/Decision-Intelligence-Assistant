@@ -1,9 +1,14 @@
-from fastapi import APIRouter, Query
-from app.services.retrieval_service import retrieve_tickets
+from fastapi import APIRouter
+from pydantic import BaseModel
+from app.services.ml_service import predict_priority
 
-router = APIRouter(prefix="/retrieval", tags=["retrieval"])
+router = APIRouter(prefix="/ml", tags=["ml"])
 
-@router.get("/similar")
-async def get_similar_tickets(query: str = Query(..., description="User query")):
-    results = retrieve_tickets(query)
-    return {"results": results}
+class PriorityRequest(BaseModel):
+    text: str
+
+@router.post("/predict")
+async def predict(request: PriorityRequest):
+    """Return ML priority prediction + confidence."""
+    result = predict_priority(request.text)
+    return result
