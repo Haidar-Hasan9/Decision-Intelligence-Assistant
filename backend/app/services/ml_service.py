@@ -1,6 +1,7 @@
 import logging
 from functools import lru_cache
 import joblib
+import os
 import numpy as np
 from app.config import settings as cfg
 from .feature_engineering import compute_features  # we'll define this next
@@ -25,4 +26,4 @@ def predict_priority(text: str):
     pred = model.predict(features)[0]
     proba = model.predict_proba(features)[0]  # [prob_class0, prob_class1]
     confidence = proba[1] if pred == 1 else proba[0]
-    return {"priority": int(pred), "confidence": float(confidence)}
+    return {"priority": int(pred), "confidence": float(confidence)} 
