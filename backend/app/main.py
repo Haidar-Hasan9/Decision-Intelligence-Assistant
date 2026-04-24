@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 from app.routers import retrieval, ml, llm
+from .logging_config import setup_logging
+
+# Setup logging before creating the app
+setup_logging()
 
 app = FastAPI(title="Decision Intelligence Assistant")
 
